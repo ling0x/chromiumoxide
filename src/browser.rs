@@ -645,6 +645,10 @@ pub struct BrowserConfig {
     ignore_https_errors: bool,
     /// Ignore invalid messages, default is true
     ignore_invalid_messages: bool,
+
+    /// Disable HTTPS-first features (HttpsUpgrades, HttpsFirstBalancedModeAutoEnable)
+    disable_https_first: bool,
+
     viewport: Option<Viewport>,
     /// The duration after a request with no response should time out
     request_timeout: Duration,
@@ -680,6 +684,7 @@ pub struct BrowserConfigBuilder {
     launch_timeout: Duration,
     ignore_https_errors: bool,
     ignore_invalid_events: bool,
+    disable_https_first: bool,
     viewport: Option<Viewport>,
     request_timeout: Duration,
     args: Vec<String>,
@@ -715,6 +720,7 @@ impl Default for BrowserConfigBuilder {
             launch_timeout: Duration::from_millis(LAUNCH_TIMEOUT),
             ignore_https_errors: true,
             ignore_invalid_events: true,
+            disable_https_first: false,
             viewport: Some(Default::default()),
             request_timeout: Duration::from_millis(REQUEST_TIMEOUT),
             args: Vec::new(),
@@ -865,6 +871,11 @@ impl BrowserConfigBuilder {
         self
     }
 
+    pub fn disable_https_first(mut self) -> Self {
+        self.disable_https_first = true;
+        self
+    }
+
     pub fn enable_request_intercept(mut self) -> Self {
         self.request_intercept = true;
         self
@@ -910,6 +921,7 @@ impl BrowserConfigBuilder {
             launch_timeout: self.launch_timeout,
             ignore_https_errors: self.ignore_https_errors,
             ignore_invalid_messages: self.ignore_invalid_events,
+            disable_https_first: self.disable_https_first,
             viewport: self.viewport,
             request_timeout: self.request_timeout,
             args: self.args,
@@ -985,6 +997,10 @@ impl BrowserConfig {
 
         if self.hidden {
             cmd.arg("--disable-blink-features=AutomationControlled");
+        }
+
+        if self.disable_https_first {
+            cmd.arg("--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable");
         }
 
         if let Some(ref envs) = self.process_envs {
