@@ -1000,10 +1000,7 @@ impl BrowserConfig {
         }
 
         if self.disable_https_first {
-            cmd.args([
-                "--disable-features=HttpsUpgrades",
-                "--disable-features=HttpsFirstBalancedModeAutoEnable",
-            ]);
+            cmd.arg("--disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable");
         }
 
         if let Some(ref envs) = self.process_envs {

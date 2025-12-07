@@ -10,8 +10,8 @@ async fn test_config_disable_https_first() {
         async |browser| {
             let page = browser.new_page("about:blank").await.unwrap();
             page.goto("http://perdu.com").await.unwrap();
-            let title = page.url().await.unwrap().unwrap();
-            assert!(title.starts_with("http://"));
+            let url = page.url().await.unwrap().unwrap();
+            assert!(url.starts_with("http://"));
         },
     )
     .await;
