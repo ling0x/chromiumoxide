@@ -443,7 +443,6 @@ impl BrowserConfig {
         let mut cmd = async_process::Command::new(&self.executable);
 
         let args = builder.into_iter().collect::<Vec<String>>();
-        println!("args: {:?}", args);
         cmd.args(args);
 
         if let Some(ref envs) = self.process_envs {
