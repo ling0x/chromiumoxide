@@ -436,7 +436,11 @@ impl BrowserConfig {
         if self.disable_https_first {
             builder.arg(Arg::values(
                 "disable-features",
-                ["HttpsUpgrades", "HttpsFirstBalancedModeAutoEnable"],
+                [
+                    "HttpsUpgrades",
+                    "HttpsFirstBalancedMode",
+                    "HttpsFirstBalancedModeAutoEnable",
+                ],
             ));
         }
 
