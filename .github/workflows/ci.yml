@@ -65,6 +65,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: dtolnay/rust-toolchain@stable
+      - name: Debug Chrome policies
+        run: |
+          echo "=== Chrome policies ==="
+          cat /etc/opt/chrome/policies/managed/*.json 2>/dev/null || echo "No managed policies"
+          cat /etc/opt/chrome/policies/recommended/*.json 2>/dev/null || echo "No recommended policies"
+          cat /etc/chromium/policies/managed/*.json 2>/dev/null || echo "No Chromium managed policies"
+          ls -la /etc/opt/chrome/policies/ 2>/dev/null || echo "No policy dir"
       - run: RUST_TEST_THREADS=1 cargo test --test '*'
 
   test-fetcher:
