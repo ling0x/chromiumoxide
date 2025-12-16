@@ -13,6 +13,7 @@ async fn test_config_disable_https_first() {
             let page = browser.new_page("about:blank").await.unwrap();
             page.goto("http://perdu.com").await.unwrap();
             let url = page.url().await.unwrap().unwrap();
+            println!("url: {:?}", url);
             assert!(url.starts_with("http://"));
         },
     )
